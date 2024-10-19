@@ -145,5 +145,97 @@ public function getInflowsByCategories(Request $request)
     return response()->json($responseData);
 }
 
+public function getOutflowsByCategories(Request $request)
+{
+    // Retrieve token information (for security and company identification)
+    $tokenInfo = $request->attributes->get('tokenInfo');
+
+    // Initialize company ID
+    $companyId = null;
+
+    // Identify company based on token information (either manager or employee)
+    if ($tokenInfo->manager_id) {
+        $company = Company::where('manager_id', $tokenInfo->manager_id)->first();
+        $companyId = $company ? $company->id : null;
+    } elseif ($tokenInfo->employee_id) {
+        $company = Company::whereHas('employees', function ($query) use ($tokenInfo) {
+            $query->where('id', $tokenInfo->employee_id);
+        })->first();
+        $companyId = $company ? $company->id : null;
+    }
+
+    // Return error if company not found
+    if (!$companyId) {
+        return response()->json(['error' => 'Company not found.'], 404);
+    }
+
+    // Query outflows aggregated by category
+    $outflows = Outflow::select('outflow_category_id', DB::raw('SUM(amount) as total_amount'))
+        ->where('company_id', $companyId)
+        ->groupBy('outflow_category_id')
+        ->with('category')  // Assuming a relationship exists with the category
+        ->get();
+
+    // Prepare the response data for the pie chart
+    $categories = $outflows->map(function ($outflow) {
+        return [
+            'label' => $outflow->category->name, // Category name
+            'value' => (float) $outflow->total_amount // Total amount for this category, cast to float
+        ];
+    });
+
+    return response()->json($categories);
+}
+
+public function getOutflowsByDate(Request $request)
+{
+    // Fetch token information
+    $tokenInfo = $request->attributes->get('tokenInfo');
+
+    // Initialize company ID
+    $companyId = null;
+
+    // Check if the user is a manager or an employee and fetch the company
+    if ($tokenInfo->manager_id) {
+        $company = Company::where('manager_id', $tokenInfo->manager_id)->first();
+        $companyId = $company ? $company->id : null;
+    } elseif ($tokenInfo->employee_id) {
+        $company = Company::whereHas('employees', function ($query) use ($tokenInfo) {
+            $query->where('id', $tokenInfo->employee_id);
+        })->first();
+        $companyId = $company ? $company->id : null;
+    }
+
+    // Check if company ID was found
+    if (!$companyId) {
+        return response()->json(['error' => 'Company not found.'], 404);
+    }
+
+    // Get the current month in 'Y-m' format
+    $currentMonth = now()->format('Y-m');
+
+    // Fetch outflows for the current month by date
+    $outflows = Outflow::where('company_id', $companyId)
+        ->where('date', 'like', "$currentMonth%")
+        ->get();
+
+    // Prepare data grouped by date
+    $outflowDataByDate = [];
+
+    foreach ($outflows as $outflow) {
+        $dateKey = date('Y-m-d', strtotime($outflow->date));
+        if (!isset($outflowDataByDate[$dateKey])) {
+            $outflowDataByDate[$dateKey] = 0;
+        }
+        $outflowDataByDate[$dateKey] += $outflow->amount;
+    }
+
+    // Return response as JSON
+    return response()->json($outflowDataByDate);
+}
+
+
+
+
 
 }
