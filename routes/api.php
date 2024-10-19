@@ -8,6 +8,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\IncomeStatementController;
 
 use App\Http\Controllers\UserProfileController;
 
@@ -33,7 +34,8 @@ use App\Http\Controllers\CashFlowController;
 
 
 
-Route::post('/reports/generate', [ReportController::class, 'generateReport']);
+Route::post('/reports/generate', [ReportController::class, 'generateReport'])
+    ->middleware(VerifyToken::class);
 
 
 
@@ -75,6 +77,10 @@ Route::post('/outflow', [OutflowController::class, 'store'])
 Route::get('/outflow-categories', [OutflowController::class, 'getOutflowCategories']);
 Route::get('/getOutflows', [OutflowController::class, 'getAllOutflows'])->middleware(VerifyToken::class);;
 
+Route::post('/generate-income-statement', [IncomeStatementController::class, 'generateIncomeStatement'])
+    ->middleware(VerifyToken::class);
+
+
 
 
 Route::post('/inflow', [InflowController::class, 'store'])->middleware(VerifyToken::class);; // Store inflow
@@ -87,5 +93,7 @@ Route::get('/dashboard/metrics', [DashboardMetricsController::class, 'index'])->
 Route::get('/cash-flow', [CashFlowController::class, 'getCashFlowData'])->middleware(VerifyToken::class);; 
 Route::get('/inflow-category', [CashFlowController::class, 'getInflowsByCategories'])->middleware(VerifyToken::class);; 
 
+
 Route::get('/outflow-category', [CashFlowController::class, 'getOutflowsByCategories'])->middleware(VerifyToken::class);; 
 Route::get('/outflow-evolution', [CashFlowController::class, 'getOutflowsByDate'])->middleware(VerifyToken::class);; 
+

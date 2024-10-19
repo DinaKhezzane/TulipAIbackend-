@@ -13,13 +13,18 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Name of the category
-            $table->string('description')->nullable(); // Optional description
-            $table->timestamps(); // created_at and updated_at
+            $table->foreignId('manager_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // Foreign key to categories
+            $table->string('org_name');
+            $table->text('description');
+            $table->string('company_logo')->nullable();
+            $table->timestamps();
         });
+        
     }
+    
 
     /**
      * Reverse the migrations.
