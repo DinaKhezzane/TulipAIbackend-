@@ -7,7 +7,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\RoleController;
-
+use App\Http\Controllers\ExpenseController;
 
 use App\Http\Controllers\UserProfileController;
 
@@ -24,6 +24,13 @@ use App\Http\Controllers\InvitationController;
 */
 // Route::post('/managers', [ManagerController::class, 'create']);
 
+Route::get('/expenses', [ExpenseController::class, 'index']);
+Route::post('/api/expenses', [ExpenseController::class, 'store']);
+Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
+Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+
+Route::get('/profits', [ProfitController::class, 'index']);
+Route::post('/profits', [ProfitController::class, 'store']);
 
 Route::get('/categories', [CategoriesController::class, 'index']);
 
@@ -48,8 +55,10 @@ Route::post('/invite-employee', [InvitationController::class, 'inviteEmployee'])
     ->middleware(VerifyToken::class);
 
 
+
 Route::get('/company_info/{token}', [InvitationController::class, 'getCompanyInfo']);
 
 
 Route::post('/employee_signup', [InvitationController::class, 'storeEmployee']);
     
+
