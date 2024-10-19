@@ -13,7 +13,11 @@ use App\Http\Controllers\UserProfileController;
 
 use App\Http\Middleware\VerifyToken;
 use App\Http\Controllers\InvitationController;
+
 use App\Http\Controllers\OutflowController;
+
+use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +28,12 @@ use App\Http\Controllers\OutflowController;
 |
 */
 // Route::post('/managers', [ManagerController::class, 'create']);
+
+
+
+
+Route::post('/reports/generate', [ReportController::class, 'generateReport']);
+
 
 
 Route::get('/categories', [CategoriesController::class, 'index']);
