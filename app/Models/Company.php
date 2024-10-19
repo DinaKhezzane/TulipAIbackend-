@@ -21,4 +21,9 @@ class Company extends Model
     {
         return $this->belongsTo(Manager::class);
     }
+
+    public function employees() // Define the relationship for employees
+    {
+        return $this->hasMany(Employee::class);
+    }
 }
