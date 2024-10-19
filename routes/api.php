@@ -29,6 +29,8 @@ Route::post('/api/expenses', [ExpenseController::class, 'store']);
 Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
 Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
 
+Route::get('/profits', [ProfitController::class, 'index']);
+Route::post('/profits', [ProfitController::class, 'store']);
 
 Route::get('/categories', [CategoriesController::class, 'index']);
 
