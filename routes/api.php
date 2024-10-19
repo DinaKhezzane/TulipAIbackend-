@@ -16,9 +16,10 @@ use App\Http\Middleware\VerifyToken;
 use App\Http\Controllers\InvitationController;
 
 use App\Http\Controllers\OutflowController;
-
+use App\Http\Controllers\DashboardMetricsController;
 use App\Http\Controllers\ReportController;
-
+use App\Http\Controllers\InflowController;
+use App\Http\Controllers\CashFlowController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -75,5 +76,20 @@ Route::post('/outflow', [OutflowController::class, 'store'])
 // Add the route in your routes/api.php
 Route::get('/outflow-categories', [OutflowController::class, 'getOutflowCategories']);
 Route::get('/getOutflows', [OutflowController::class, 'getAllOutflows'])->middleware(VerifyToken::class);;
+
 Route::post('/generate-income-statement', [IncomeStatementController::class, 'generateIncomeStatement'])
     ->middleware(VerifyToken::class);
+
+
+
+
+Route::post('/inflow', [InflowController::class, 'store'])->middleware(VerifyToken::class);; // Store inflow
+Route::get('/inflow-categories', [InflowController::class, 'getInflowCategories']); // Get inflow categories
+Route::get('/inflows', [InflowController::class, 'getAllInflows'])->middleware(VerifyToken::class);; // Get all inflows for a company
+Route::get('/dashboard/metrics', [DashboardMetricsController::class, 'index'])->middleware(VerifyToken::class);; // Get all inflows for a company
+
+
+
+Route::get('/cash-flow', [CashFlowController::class, 'getCashFlowData'])->middleware(VerifyToken::class);; 
+Route::get('/inflow-category', [CashFlowController::class, 'getInflowsByCategories'])->middleware(VerifyToken::class);; 
+
