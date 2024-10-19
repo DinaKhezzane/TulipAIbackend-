@@ -7,9 +7,16 @@ use App\Models\Inflow;
 use App\Models\InflowCategory;
 use App\Models\Company;
 use Illuminate\Support\Facades\Log;
+use App\Services\DashboardMetricsService;
 
 class InflowController extends Controller
 {
+    protected $dashboardMetricsService;
+
+    public function __construct(DashboardMetricsService $dashboardMetricsService)
+    {
+        $this->dashboardMetricsService = $dashboardMetricsService;
+    }
     public function store(Request $request)
     {
         try {
@@ -48,6 +55,8 @@ class InflowController extends Controller
                 'description' => $request->description,
                 'company_id' => $company->id,
             ]);
+
+            $this->dashboardMetricsService->calculateMetrics($inflow->company_id);
 
             return response()->json(['message' => 'Inflow added successfully!', 'inflow' => $inflow], 201);
         } catch (\Exception $e) {

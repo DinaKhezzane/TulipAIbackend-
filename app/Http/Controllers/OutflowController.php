@@ -8,8 +8,17 @@ use App\Models\OutflowCategory;
 use App\Models\Company;
 use Illuminate\Support\Facades\Log;
 
+use App\Services\DashboardMetricsService;
+
 class OutflowController extends Controller
 {
+
+    protected $dashboardMetricsService;
+
+    public function __construct(DashboardMetricsService $dashboardMetricsService)
+    {
+        $this->dashboardMetricsService = $dashboardMetricsService;
+    }
     public function store(Request $request)
 {
     try {
@@ -67,6 +76,8 @@ class OutflowController extends Controller
             'description' => $request->description,
             'company_id' => $company->id,
         ]);
+
+        $this->dashboardMetricsService->calculateMetrics($outflow->company_id);
 
         return response()->json(['message' => 'Outflow added successfully!', 'outflow' => $outflow], 201);
     } catch (\Exception $e) {
