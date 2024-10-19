@@ -13,7 +13,11 @@ use App\Http\Controllers\UserProfileController;
 
 use App\Http\Middleware\VerifyToken;
 use App\Http\Controllers\InvitationController;
+
+use App\Http\Controllers\OutflowController;
+
 use App\Http\Controllers\ReportController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,15 +29,12 @@ use App\Http\Controllers\ReportController;
 */
 // Route::post('/managers', [ManagerController::class, 'create']);
 
-Route::get('/expenses', [ExpenseController::class, 'index']);
-Route::post('/api/expenses', [ExpenseController::class, 'store']);
-Route::put('/expenses/{id}', [ExpenseController::class, 'update']);
-Route::delete('/expenses/{id}', [ExpenseController::class, 'destroy']);
+
+
 
 Route::post('/reports/generate', [ReportController::class, 'generateReport']);
 
-Route::get('/profits', [ProfitController::class, 'index']);
-Route::post('/profits', [ProfitController::class, 'store']);
+
 
 Route::get('/categories', [CategoriesController::class, 'index']);
 
@@ -65,3 +66,10 @@ Route::get('/company_info/{token}', [InvitationController::class, 'getCompanyInf
 Route::post('/employee_signup', [InvitationController::class, 'storeEmployee']);
     
 
+
+Route::post('/outflow', [OutflowController::class, 'store'])
+    ->middleware(VerifyToken::class);
+
+// Add the route in your routes/api.php
+Route::get('/outflow-categories', [OutflowController::class, 'getOutflowCategories']);
+Route::get('/getOutflows', [OutflowController::class, 'getAllOutflows'])->middleware(VerifyToken::class);;
