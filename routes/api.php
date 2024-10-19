@@ -88,3 +88,4 @@ Route::get('/cash-flow', [CashFlowController::class, 'getCashFlowData'])->middle
 Route::get('/inflow-category', [CashFlowController::class, 'getInflowsByCategories'])->middleware(VerifyToken::class);; 
 
 Route::get('/outflow-category', [CashFlowController::class, 'getOutflowsByCategories'])->middleware(VerifyToken::class);; 
+Route::get('/outflow-evolution', [CashFlowController::class, 'getOutflowsByDate'])->middleware(VerifyToken::class);; 
