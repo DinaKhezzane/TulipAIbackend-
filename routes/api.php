@@ -17,7 +17,7 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\OutflowController;
 
 use App\Http\Controllers\ReportController;
-
+use App\Http\Controllers\InflowController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -73,3 +73,9 @@ Route::post('/outflow', [OutflowController::class, 'store'])
 // Add the route in your routes/api.php
 Route::get('/outflow-categories', [OutflowController::class, 'getOutflowCategories']);
 Route::get('/getOutflows', [OutflowController::class, 'getAllOutflows'])->middleware(VerifyToken::class);;
+
+
+
+Route::post('/inflow', [InflowController::class, 'store'])->middleware(VerifyToken::class);; // Store inflow
+Route::get('/inflow-categories', [InflowController::class, 'getInflowCategories']); // Get inflow categories
+Route::get('/inflows', [InflowController::class, 'getAllInflows'])->middleware(VerifyToken::class);; // Get all inflows for a company
