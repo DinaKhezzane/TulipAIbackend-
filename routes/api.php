@@ -6,7 +6,13 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\RoleController;
 
+
+use App\Http\Controllers\UserProfileController;
+
+use App\Http\Middleware\VerifyToken;
+use App\Http\Controllers\InvitationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +24,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 */
 // Route::post('/managers', [ManagerController::class, 'create']);
 
+
 Route::get('/categories', [CategoriesController::class, 'index']);
 
 Route::post('/login', [LoginController::class, 'login']);
@@ -27,3 +34,15 @@ Route::middleware(['api'])->group(function () {
 });
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink']);
+
+
+
+Route::get('/roles', [RoleController::class, 'index']);
+
+Route::get('/user-profile', [UserProfileController::class, 'getUserProfile'])
+    ->middleware(VerifyToken::class);
+
+    
+
+Route::post('/invite-employee', [InvitationController::class, 'inviteEmployee'])
+    ->middleware(VerifyToken::class);

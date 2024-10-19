@@ -6,12 +6,6 @@ use Closure;
 use App\Models\Token;
 use Illuminate\Support\Facades\Log;
 
-namespace App\Http\Middleware;
-
-use Closure;
-use App\Models\Token;
-use Illuminate\Support\Facades\Log;
-
 class VerifyToken
 {
     public function handle($request, Closure $next)
@@ -30,19 +24,20 @@ class VerifyToken
             // Find the token in the database
             $tokenInfo = Token::where('token', $token)->first();
 
+            Log::info($tokenInfo['token']);
+
             // Check if the token is valid and not expired
             if (!$tokenInfo || $tokenInfo->isExpired()) {
-                // If the token is invalid or expired, delete it from the database
+                // Optionally log the token expiration
                 if ($tokenInfo) {
-                    $tokenInfo->delete(); // Optionally log this action if necessary
+                    $tokenInfo->delete();
                 }
 
-                Log::info('Token expired or invalid. User needs to reauthenticate.');
-
+                Log::info('Token expired or invalid.');
                 return response()->json(['message' => 'Invalid or expired token'], 401);
             }
 
-            // Optionally, you can add the token information to the request for easy access in controllers
+            // Attach the token information to the request for easy access
             $request->attributes->add(['tokenInfo' => $tokenInfo]);
 
             return $next($request);
