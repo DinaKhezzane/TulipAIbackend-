@@ -13,10 +13,11 @@ class Employee extends Authenticatable implements CanResetPassword // Implement 
     protected $fillable = [
         'name',
         'email',
-        'phone_number',
+        'phone_number', // Ensure this matches the field name in the database
+        'password',
         'company_id',
         'role_id',
-        'status',
+        'status', // Include the status field
         'token',
     ];
 

@@ -46,3 +46,10 @@ Route::get('/user-profile', [UserProfileController::class, 'getUserProfile'])
 
 Route::post('/invite-employee', [InvitationController::class, 'inviteEmployee'])
     ->middleware(VerifyToken::class);
+
+
+Route::get('/company_info/{token}', [InvitationController::class, 'getCompanyInfo']);
+
+
+Route::post('/employee_signup', [InvitationController::class, 'storeEmployee']);
+    
