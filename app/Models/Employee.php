@@ -10,7 +10,15 @@ class Employee extends Authenticatable implements CanResetPassword // Implement 
 {
     use Notifiable;
 
-    protected $fillable = ['name', 'email', 'phone_number', 'company_id', 'role_id'];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone_number',
+        'company_id',
+        'role_id',
+        'status',
+        'token',
+    ];
 
     public function company()
     {

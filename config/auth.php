@@ -70,11 +70,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Manager::class,
         ],
         'businesses' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Business::class,
+            'model' => App\Models\Employee::class,
         ],
     ],
    

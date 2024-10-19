@@ -36,38 +36,32 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'host' => env('MAIL_HOST', 'live.smtp.mailtrap.io'),
             'port' => env('MAIL_PORT', 587),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'), // Typically, Mailtrap uses TLS
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
             'stream' => [
                 'ssl' => [
-                    'verify_peer' => !env('MAIL_VERIFY_PEER', false),
-                    'verify_peer_name' => !env('MAIL_VERIFY_PEER', false),
-                    'allow_self_signed' => env('MAIL_VERIFY_PEER', false),
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
                 ],
             ],
         ],
 
+        // Other mailers remain unchanged
         'ses' => [
             'transport' => 'ses',
         ],
 
         'mailgun' => [
             'transport' => 'mailgun',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
 
         'postmark' => [
             'transport' => 'postmark',
-            // 'client' => [
-            //     'timeout' => 5,
-            // ],
         ],
 
         'sendmail' => [
@@ -105,8 +99,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'woahhsxrrx@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'GAlleria'),
+        'address' => env('MAIL_FROM_ADDRESS', 'galleria.dz.help@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Galleria'),
     ],
 
     /*
