@@ -94,7 +94,7 @@ private function generateCsv($data)
     ];
 
     // Pass the hardcoded company information to the PDF view
-    $pdf = PDF::loadView('reports.template', [
+    $pdf = PDF::loadView('pdf_templates.template', [
         'data' => $data,
         'reportType' => $reportType,
         'startDate' => $startDate,
